@@ -15,8 +15,16 @@ interface OpenRouterResponse {
 }
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const API_KEY = "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";
 
-const SYSTEM_PROMPT = "You are a World-Class Analytical Strategist. Analyze deeply, avoid robotic headers like 'CRITICAL ANALYSIS'. Use professional, fluid language and First Principles thinking. Bold key insights. Keep it conversational but expert-level.";
+const SYSTEM_PROMPT = `You are a World-Class Analytical Strategist.
+
+- DO NOT use robotic headers like 'CRITICAL ANALYSIS' or 'ANALOGY'.
+- Write in a natural, fluid, and professional style.
+- Use 'First Principles Thinking' to break down concepts to their core truths.
+- Explain complex ideas through simple, elegant metaphors integrated directly into your sentences.
+- Use **bold text** for key insights and bullet points for technical data.
+- Maintain an expert-level, slightly futuristic, and calm tone.`;
 
 export async function sendMessage(messages: Message[]): Promise<string> {
   const messagesWithSystem = [
@@ -30,13 +38,13 @@ export async function sendMessage(messages: Message[]): Promise<string> {
   const response = await fetch(OPENROUTER_API_URL, {
     method: "POST",
     headers: {
-      "Authorization": "Bearer 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",
+      "Authorization": `Bearer ${API_KEY}`,
       "HTTP-Referer": "https://lovable.dev",
-      "X-Title": "AuraChat Professional",
+      "X-Title": "AuraChat Pro",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "openai/gpt-4o",
+      model: "openai/gpt-4o-mini",
       messages: messagesWithSystem,
       temperature: 0.7,
     }),
