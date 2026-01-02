@@ -68,7 +68,7 @@ const Index = () => {
             className="max-w-3xl mx-auto flex items-center justify-between"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-[0_0_20px_hsl(185_100%_50%/0.15)]">
                 <Sparkles className="w-5 h-5 text-primary" />
               </div>
               <div>
@@ -81,26 +81,26 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Analytical Engine Badge */}
+            {/* Status Badge - Neon Cyan */}
             <motion.div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
             >
               <motion.div
-                className="w-2 h-2 rounded-full bg-emerald-500"
+                className="w-2 h-2 rounded-full bg-primary"
                 animate={{
                   boxShadow: [
-                    "0 0 4px 1px rgba(16, 185, 129, 0.4)",
-                    "0 0 8px 2px rgba(16, 185, 129, 0.6)",
-                    "0 0 4px 1px rgba(16, 185, 129, 0.4)",
+                    "0 0 4px 1px hsl(185 100% 50% / 0.4)",
+                    "0 0 12px 3px hsl(185 100% 50% / 0.6)",
+                    "0 0 4px 1px hsl(185 100% 50% / 0.4)",
                   ],
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-[10px] uppercase tracking-wider text-emerald-500 font-medium">
-                Analytical Engine Active
+              <span className="text-[10px] uppercase tracking-wider text-primary font-medium">
+                Online
               </span>
             </motion.div>
           </motion.div>
@@ -122,17 +122,16 @@ const Index = () => {
                   className="flex flex-col items-center justify-center min-h-[50vh] text-center"
                 >
                   <motion.div
-                    className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20 flex items-center justify-center mb-6"
+                    className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center mb-6"
                     animate={{
                       boxShadow: [
-                        "0 0 30px hsl(187 94% 43% / 0.1)",
-                        "0 0 50px hsl(263 70% 58% / 0.15)",
-                        "0 0 30px hsl(160 84% 39% / 0.1)",
-                        "0 0 30px hsl(187 94% 43% / 0.1)",
+                        "0 0 30px hsl(185 100% 50% / 0.15)",
+                        "0 0 60px hsl(185 100% 50% / 0.25)",
+                        "0 0 30px hsl(185 100% 50% / 0.15)",
                       ],
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}

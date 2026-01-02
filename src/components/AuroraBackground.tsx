@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const AuroraBackground = () => {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Base dark background */}
+      {/* Deep slate/charcoal base */}
       <div className="absolute inset-0 bg-background" />
       
       {/* Aurora layers */}
@@ -13,12 +13,12 @@ const AuroraBackground = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
       >
-        {/* Primary cyan aurora */}
+        {/* Primary neon cyan aurora */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-[60vw] h-[60vh] rounded-full"
           style={{
-            background: "radial-gradient(ellipse at center, hsl(187 94% 43% / 0.15), transparent 70%)",
-            filter: "blur(80px)",
+            background: "radial-gradient(ellipse at center, hsl(185 100% 50% / 0.12), transparent 70%)",
+            filter: "blur(100px)",
           }}
           animate={{
             x: [0, 50, -30, 0],
@@ -33,18 +33,18 @@ const AuroraBackground = () => {
           }}
         />
 
-        {/* Secondary violet aurora */}
+        {/* Secondary purple aurora - more subtle */}
         <motion.div
           className="absolute top-1/3 right-1/4 w-[50vw] h-[50vh] rounded-full"
           style={{
-            background: "radial-gradient(ellipse at center, hsl(263 70% 58% / 0.12), transparent 70%)",
-            filter: "blur(100px)",
+            background: "radial-gradient(ellipse at center, hsl(270 80% 60% / 0.06), transparent 70%)",
+            filter: "blur(120px)",
           }}
           animate={{
             x: [0, -40, 30, 0],
             y: [0, 40, -20, 0],
             scale: [1, 0.95, 1.1, 1],
-            opacity: [0.3, 0.5, 0.4, 0.3],
+            opacity: [0.2, 0.4, 0.3, 0.2],
           }}
           transition={{
             duration: 15,
@@ -54,45 +54,43 @@ const AuroraBackground = () => {
           }}
         />
 
-        {/* Tertiary emerald aurora */}
+        {/* Tertiary cyan glow at bottom */}
         <motion.div
-          className="absolute bottom-1/4 left-1/3 w-[40vw] h-[40vh] rounded-full"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80vw] h-[30vh] rounded-full"
           style={{
-            background: "radial-gradient(ellipse at center, hsl(160 84% 39% / 0.08), transparent 70%)",
-            filter: "blur(90px)",
+            background: "radial-gradient(ellipse at center, hsl(185 100% 50% / 0.08), transparent 70%)",
+            filter: "blur(80px)",
           }}
           animate={{
-            x: [0, 30, -50, 0],
-            y: [0, -50, 30, 0],
             scale: [1, 1.05, 0.98, 1],
-            opacity: [0.2, 0.4, 0.3, 0.2],
+            opacity: [0.15, 0.25, 0.2, 0.15],
           }}
           transition={{
-            duration: 18,
+            duration: 10,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 2,
           }}
         />
 
-        {/* Subtle mesh overlay */}
+        {/* Subtle grid overlay */}
         <div 
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `
-              linear-gradient(to right, hsl(0 0% 50%) 1px, transparent 1px),
-              linear-gradient(to bottom, hsl(0 0% 50%) 1px, transparent 1px)
+              linear-gradient(to right, hsl(185 100% 50%) 1px, transparent 1px),
+              linear-gradient(to bottom, hsl(185 100% 50%) 1px, transparent 1px)
             `,
-            backgroundSize: "60px 60px",
+            backgroundSize: "80px 80px",
           }}
         />
       </motion.div>
 
-      {/* Vignette effect */}
+      {/* Vignette effect - deeper */}
       <div 
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 20%, hsl(0 0% 4%) 100%)",
+          background: "radial-gradient(ellipse 70% 50% at 50% 50%, transparent 10%, hsl(220 20% 6%) 100%)",
         }}
       />
     </div>

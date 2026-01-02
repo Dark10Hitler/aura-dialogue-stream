@@ -86,21 +86,21 @@ const ChatInput = ({ onSend, isLoading, disabled }: ChatInputProps) => {
           </AnimatePresence>
 
           <div className="flex items-end gap-3 p-3">
-            {/* Expert Mode indicator */}
+            {/* Status indicator with neon cyan */}
             <div className="flex items-center gap-2 flex-shrink-0 mb-2">
               <motion.div
-                className="w-2 h-2 rounded-full bg-emerald-500"
+                className="w-2 h-2 rounded-full bg-primary"
                 animate={{
                   boxShadow: [
-                    "0 0 4px 1px rgba(16, 185, 129, 0.4)",
-                    "0 0 8px 2px rgba(16, 185, 129, 0.6)",
-                    "0 0 4px 1px rgba(16, 185, 129, 0.4)",
+                    "0 0 4px 1px hsl(185 100% 50% / 0.4)",
+                    "0 0 12px 3px hsl(185 100% 50% / 0.6)",
+                    "0 0 4px 1px hsl(185 100% 50% / 0.4)",
                   ],
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-[10px] uppercase tracking-wider text-emerald-500/70 font-medium hidden sm:inline">
-                Expert Mode
+              <span className="text-[10px] uppercase tracking-wider text-primary/70 font-medium hidden sm:inline">
+                Active
               </span>
             </div>
 
@@ -117,11 +117,11 @@ const ChatInput = ({ onSend, isLoading, disabled }: ChatInputProps) => {
               style={{ scrollbarWidth: "none" }}
             />
 
-            {/* Send button */}
+            {/* Glowing Send button */}
             <motion.button
               type="submit"
               disabled={!input.trim() || isLoading || disabled}
-              className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors mb-0.5"
+              className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center glow-button text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed mb-0.5"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
