@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Coins, RefreshCw, Zap, Key, Loader2 } from 'lucide-react';
 import { useBalanceContext } from '@/contexts/BalanceContext';
+import { useState, useEffect } from 'react';
 
 interface BalanceHeaderProps {
   userId: string;
@@ -11,6 +12,17 @@ interface BalanceHeaderProps {
 
 export const BalanceHeader = ({ userId, onRefresh, onTopUp, onShowRecovery }: BalanceHeaderProps) => {
   const { balance, isLoading, isColdStart } = useBalanceContext();
+  const [isPulsing, setIsPulsing] = useState(false);
+  const [prevBalance, setPrevBalance] = useState<number | null>(null);
+
+  // Detect balance changes and trigger pulse animation
+  useEffect(() => {
+    if (prevBalance !== null && balance !== null && balance !== prevBalance) {
+      setIsPulsing(true);
+      setTimeout(() => setIsPulsing(false), 500);
+    }
+    setPrevBalance(balance);
+  }, [balance, prevBalance]);
 
   return (
     <motion.div
@@ -21,21 +33,37 @@ export const BalanceHeader = ({ userId, onRefresh, onTopUp, onShowRecovery }: Ba
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* Balance Display */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+          <motion.div 
+            className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative"
+            animate={isPulsing ? {
+              scale: [1, 1.1, 1],
+              boxShadow: [
+                '0 0 0 0 hsl(var(--primary) / 0)',
+                '0 0 20px 10px hsl(var(--primary) / 0.3)',
+                '0 0 0 0 hsl(var(--primary) / 0)',
+              ],
+            } : {}}
+            transition={{ duration: 0.5 }}
+          >
             <Coins className="w-6 h-6 text-primary" />
-          </div>
+          </motion.div>
           <div>
-            <p className="text-sm text-muted-foreground">Available Credits</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Available Credits</p>
             <div className="flex items-center gap-2">
               {isLoading ? (
                 <Loader2 className="w-5 h-5 text-primary animate-spin" />
               ) : (
-                <span className="text-2xl font-bold text-foreground">
+                <motion.span 
+                  className={`text-3xl font-bold text-foreground ${isPulsing ? 'pulse-balance' : ''}`}
+                  key={balance}
+                  initial={{ scale: 1 }}
+                  animate={isPulsing ? { scale: [1, 1.2, 1] } : {}}
+                >
                   {balance ?? 0}
-                </span>
+                </motion.span>
               )}
               {isColdStart && (
-                <span className="text-xs text-primary animate-pulse">Loading...</span>
+                <span className="text-xs text-accent animate-pulse">Loading...</span>
               )}
             </div>
           </div>
@@ -46,7 +74,7 @@ export const BalanceHeader = ({ userId, onRefresh, onTopUp, onShowRecovery }: Ba
           <button
             onClick={onRefresh}
             disabled={isLoading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary/50 hover:bg-secondary/70 text-foreground text-sm font-medium transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary/50 hover:bg-secondary/70 border border-border/50 text-foreground text-sm font-medium transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Refresh</span>
@@ -54,7 +82,7 @@ export const BalanceHeader = ({ userId, onRefresh, onTopUp, onShowRecovery }: Ba
 
           <button
             onClick={onShowRecovery}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary/50 hover:bg-secondary/70 text-foreground text-sm font-medium transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary/50 hover:bg-secondary/70 border border-border/50 text-foreground text-sm font-medium transition-all"
           >
             <Key className="w-4 h-4" />
             <span className="hidden sm:inline">Recover</span>
@@ -74,7 +102,7 @@ export const BalanceHeader = ({ userId, onRefresh, onTopUp, onShowRecovery }: Ba
       <div className="mt-3 pt-3 border-t border-border/30">
         <p className="text-xs text-muted-foreground flex items-center gap-2">
           <span>Your ID:</span>
-          <code className="px-2 py-1 rounded bg-secondary/50 text-foreground font-mono text-xs">
+          <code className="px-2 py-1 rounded-lg bg-secondary/50 border border-border/50 text-foreground font-mono text-xs">
             {userId || 'Loading...'}
           </code>
         </p>

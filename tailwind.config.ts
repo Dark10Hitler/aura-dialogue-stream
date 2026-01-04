@@ -61,10 +61,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        aurora: {
-          cyan: "hsl(var(--aurora-cyan))",
-          violet: "hsl(var(--aurora-violet))",
-          emerald: "hsl(var(--aurora-emerald))",
+        neon: {
+          violet: "hsl(var(--neon-violet))",
+          "violet-glow": "hsl(var(--neon-violet-glow))",
+          cyan: "hsl(var(--neon-cyan))",
+          "cyan-glow": "hsl(var(--neon-cyan-glow))",
+          emerald: "hsl(var(--neon-emerald))",
         },
       },
       borderRadius: {
@@ -140,6 +142,30 @@ export default {
             backgroundPosition: "200% 0",
           },
         },
+        "glow-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(var(--primary) / 0.3)",
+          },
+          "50%": {
+            boxShadow: "0 0 40px hsl(var(--primary) / 0.6)",
+          },
+        },
+        "meter-fill": {
+          "0%": {
+            width: "0%",
+          },
+          "100%": {
+            width: "var(--target-width, 75%)",
+          },
+        },
+        "neural-wave": {
+          "0%": {
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -149,14 +175,18 @@ export default {
         "fade-in-up": "fade-in-up 0.4s ease-out",
         "breathe": "breathe 2s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "meter-fill": "meter-fill 1.5s ease-out forwards",
+        "neural-wave": "neural-wave 1.5s ease-in-out infinite",
       },
       backdropBlur: {
         xs: "2px",
       },
       boxShadow: {
         "glow-primary": "0 0 40px hsl(var(--primary) / 0.3)",
-        "glow-secondary": "0 0 40px hsl(var(--secondary) / 0.3)",
         "glow-accent": "0 0 40px hsl(var(--accent) / 0.3)",
+        "glow-violet": "0 0 40px hsl(256 82% 66% / 0.3)",
+        "glow-cyan": "0 0 40px hsl(187 94% 43% / 0.3)",
         "inner-glow": "inset 0 1px 0 hsl(0 0% 100% / 0.05)",
       },
     },

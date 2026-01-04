@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Zap, Star, Crown, ExternalLink, RefreshCw } from 'lucide-react';
+import { X, Zap, Star, Crown, ExternalLink, RefreshCw, AlertCircle } from 'lucide-react';
 import { useBalanceContext } from '@/contexts/BalanceContext';
 
 interface PricingModalProps {
@@ -16,6 +16,8 @@ const pricingTiers = [
     icon: Zap,
     popular: false,
     description: 'Perfect for trying out',
+    gradient: 'from-blue-500/20 to-cyan-500/20',
+    borderColor: 'border-cyan-500/30',
   },
   {
     name: 'Creator',
@@ -24,6 +26,8 @@ const pricingTiers = [
     icon: Star,
     popular: true,
     description: 'Most Popular',
+    gradient: 'from-primary/20 to-accent/20',
+    borderColor: 'border-primary/50',
   },
   {
     name: 'Pro',
@@ -32,6 +36,8 @@ const pricingTiers = [
     icon: Crown,
     popular: false,
     description: 'Best Value',
+    gradient: 'from-amber-500/20 to-orange-500/20',
+    borderColor: 'border-amber-500/30',
   },
 ];
 
@@ -57,100 +63,123 @@ export const PricingModal = ({ isOpen, onClose, userId }: PricingModalProps) => 
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+          {/* Backdrop with enhanced blur */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 bg-background/90 backdrop-blur-xl" 
+          />
           
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: 0.9, y: 40 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-3xl glass-card rounded-2xl p-6 md:p-8 overflow-hidden"
+            className="relative w-full max-w-3xl glass-card-elevated rounded-3xl p-6 md:p-8 overflow-hidden"
           >
+            {/* Decorative gradient orbs */}
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-primary/20 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-accent/20 blur-3xl" />
+
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+              className="absolute top-4 right-4 p-2.5 rounded-xl bg-secondary/50 hover:bg-secondary/80 transition-colors z-10"
             >
               <X className="w-5 h-5 text-muted-foreground" />
             </button>
 
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                Upgrade Your <span className="text-primary neon-text">Plan</span>
-              </h2>
-              <p className="text-muted-foreground">
-                Get more credits to generate unlimited AI scripts
-              </p>
-            </div>
+            <div className="relative z-10">
+              {/* Header */}
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-destructive/10 border border-destructive/30 text-destructive text-sm mb-4">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Out of Credits</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  Upgrade Your <span className="text-primary neon-text">Plan</span>
+                </h2>
+                <p className="text-muted-foreground">
+                  Get more credits to generate unlimited AI scripts
+                </p>
+              </div>
 
-            {/* Pricing Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              {pricingTiers.map((tier, index) => (
-                <motion.div
-                  key={tier.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`relative p-6 rounded-xl border ${
-                    tier.popular
-                      ? 'border-primary/50 bg-primary/5'
-                      : 'border-border/50 bg-secondary/20'
-                  }`}
-                >
-                  {tier.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium">
-                      Most Popular
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      tier.popular ? 'bg-primary/20' : 'bg-secondary/50'
-                    }`}>
-                      <tier.icon className={`w-5 h-5 ${tier.popular ? 'text-primary' : 'text-muted-foreground'}`} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">{tier.name}</h3>
-                      <p className="text-xs text-muted-foreground">{tier.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <span className="text-3xl font-bold text-foreground">{tier.price}</span>
-                    <span className="text-muted-foreground ml-2">/ {tier.credits} scripts</span>
-                  </div>
-
-                  <button
-                    onClick={() => handleBuy(tier)}
-                    className={`w-full py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+              {/* Pricing Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                {pricingTiers.map((tier, index) => (
+                  <motion.div
+                    key={tier.name}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`relative p-6 rounded-2xl border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] cursor-pointer ${
                       tier.popular
-                        ? 'glow-button text-primary-foreground'
-                        : 'bg-secondary hover:bg-secondary/80 text-foreground'
+                        ? `${tier.borderColor} bg-gradient-to-br ${tier.gradient}`
+                        : `border-border/50 bg-secondary/10 hover:bg-secondary/20`
                     }`}
+                    onClick={() => handleBuy(tier)}
                   >
-                    <span>Buy Now</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                </motion.div>
-              ))}
-            </div>
+                    {tier.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-semibold shadow-glow-primary">
+                        Most Popular
+                      </div>
+                    )}
 
-            {/* Check Payment Button */}
-            <div className="text-center">
-              <button
-                onClick={handleCheckPayment}
-                disabled={isLoading}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary/50 hover:bg-secondary/70 text-foreground font-medium transition-all disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                <span>Check Payment Status</span>
-              </button>
-              <p className="text-xs text-muted-foreground mt-2">
-                Click after completing payment in Telegram
-              </p>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        tier.popular ? 'bg-primary/20' : 'bg-secondary/50'
+                      }`}>
+                        <tier.icon className={`w-6 h-6 ${tier.popular ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">{tier.name}</h3>
+                        <p className="text-xs text-muted-foreground">{tier.description}</p>
+                      </div>
+                    </div>
+
+                    <div className="mb-5">
+                      <span className="text-4xl font-bold text-foreground">{tier.price}</span>
+                      <span className="text-muted-foreground ml-2">/ {tier.credits} scripts</span>
+                    </div>
+
+                    <div className="text-sm text-muted-foreground mb-4">
+                      <span className="text-foreground font-medium">${(parseFloat(tier.price.replace('$', '')) / tier.credits * 100).toFixed(0)}¢</span> per script
+                    </div>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBuy(tier);
+                      }}
+                      className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+                        tier.popular
+                          ? 'glow-button text-primary-foreground'
+                          : 'bg-secondary hover:bg-secondary/80 text-foreground'
+                      }`}
+                    >
+                      <span>Buy Now</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Check Payment Button */}
+              <div className="text-center">
+                <button
+                  onClick={handleCheckPayment}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-secondary/50 hover:bg-secondary/70 text-foreground font-medium transition-all disabled:opacity-50 border border-border/50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+                  <span>Check Payment Status</span>
+                </button>
+                <p className="text-xs text-muted-foreground mt-3">
+                  Click after completing payment in Telegram
+                </p>
+              </div>
             </div>
           </motion.div>
         </motion.div>
